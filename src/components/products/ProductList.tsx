@@ -76,13 +76,11 @@ export default function ProductList() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Header with Search */}
       <div className="px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <h1 className="text-3xl font-bold text-gray-900">Products</h1>
 
-            {/* Results count and filter toggle */}
             <div className="flex items-center space-x-4">
               <div className="text-sm text-gray-600">
                 {hasSearchResults ? (
@@ -135,26 +133,21 @@ export default function ProductList() {
             </div>
           </div>
 
-          {/* Search Bar */}
           <div className="w-full max-w-2xl">
             <SearchBar />
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="px-4 sm:px-6 lg:px-8 pb-8">
         <div className="lg:grid lg:grid-cols-4 lg:gap-8">
-          {/* Filters Sidebar - Desktop */}
           <div className="hidden lg:block">
             <div className="sticky top-4">
               <ProductFilters />
             </div>
           </div>
 
-          {/* Products and Mobile Filters */}
           <div className="lg:col-span-3">
-            {/* Mobile Filters Overlay */}
             {showFilters && (
               <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50">
                 <div className="absolute right-0 top-0 h-full w-80 bg-white shadow-xl overflow-y-auto">
@@ -188,7 +181,6 @@ export default function ProductList() {
               </div>
             )}
 
-            {/* Products Grid */}
             {currentProducts.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-gray-400 mb-4">
@@ -231,7 +223,6 @@ export default function ProductList() {
                   ))}
                 </div>
 
-                {/* Pagination */}
                 <Pagination
                   pagination={pagination}
                   onPageChange={handlePageChange}

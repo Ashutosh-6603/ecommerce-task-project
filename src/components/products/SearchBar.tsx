@@ -4,12 +4,11 @@ import type { RootState } from "../../store";
 import { setSearchQuery } from "../../store/productSlice";
 import { debounce } from "lodash";
 
-const SearchBar: React.FC = () => {
+export default function SearchBar() {
   const dispatch = useDispatch();
   const { search } = useSelector((state: RootState) => state.products);
   const [localQuery, setLocalQuery] = useState(search.query);
 
-  // Debounced search to avoid too many dispatches
   const debouncedSearch = useCallback(
     debounce((query: string) => {
       dispatch(setSearchQuery(query));
@@ -77,6 +76,4 @@ const SearchBar: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default SearchBar;
+}

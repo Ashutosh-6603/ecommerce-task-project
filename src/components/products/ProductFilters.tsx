@@ -7,7 +7,7 @@ import {
   clearFilters,
 } from "../../store/productSlice";
 
-const ProductFilters: React.FC = () => {
+export default function ProductFilters() {
   const dispatch = useDispatch();
   const { search, filters } = useSelector((state: RootState) => state.products);
   const { categories, priceRange } = filters;
@@ -134,6 +134,4 @@ const ProductFilters: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default ProductFilters;
+}
