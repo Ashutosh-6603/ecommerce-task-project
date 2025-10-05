@@ -5,7 +5,7 @@ import { fetchProducts } from "../services/api";
 
 const initialState: ProductState = {
   products: [],
-  filteredProducts: [], // Add filtered products array
+  filteredProducts: [],
   loading: false,
   error: null,
   pagination: {
@@ -111,7 +111,6 @@ const productSlice = createSlice({
           state.products = action.payload;
           state.filteredProducts = action.payload;
 
-          // Extract categories and price range
           const categories = Array.from(
             new Set(action.payload.map((p) => p.category))
           );
@@ -138,24 +137,20 @@ const productSlice = createSlice({
   },
 });
 
-// Helper function to filter products
 const filterProducts = (
   products: Product[],
   search: SearchState
 ): Product[] => {
   return products.filter((product) => {
-    // Text search in title and description
     const matchesQuery =
       !search.query ||
       product.title.toLowerCase().includes(search.query.toLowerCase()) ||
       product.description.toLowerCase().includes(search.query.toLowerCase()) ||
       product.category.toLowerCase().includes(search.query.toLowerCase());
 
-    // Category filter
     const matchesCategory =
       !search.category || product.category === search.category;
 
-    // Price range filter
     const matchesMinPrice =
       search.minPrice === null || product.price >= search.minPrice;
     const matchesMaxPrice =

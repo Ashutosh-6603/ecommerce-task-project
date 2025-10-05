@@ -57,7 +57,6 @@ export default function ProductFilters() {
         )}
       </div>
 
-      {/* Category Filter */}
       <div className="mb-6">
         <h4 className="text-sm font-medium text-gray-700 mb-3">Category</h4>
         <div className="space-y-2">
@@ -90,7 +89,6 @@ export default function ProductFilters() {
         </div>
       </div>
 
-      {/* Price Range Filter */}
       <div>
         <h4 className="text-sm font-medium text-gray-700 mb-3">Price Range</h4>
         <div className="grid grid-cols-2 gap-3">
