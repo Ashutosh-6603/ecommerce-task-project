@@ -41,7 +41,7 @@ export default function CheckoutModal({ onClose }: CheckoutModalProps) {
               Checkout Information
             </h3>
             <p className="text-gray-600 text-sm">
-              Total: ${(totalAmount * 1.1).toFixed(2)}
+              Total: ₹{(totalAmount * 1.1).toFixed(2)}
             </p>
           </div>
 

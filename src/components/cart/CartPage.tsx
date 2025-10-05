@@ -43,18 +43,18 @@ export default function CartPage() {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Items ({totalItems})</span>
-                <span className="text-gray-900">${totalAmount.toFixed(2)}</span>
+                <span className="text-gray-900">₹{totalAmount.toFixed(2)}</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="text-gray-600">Shipping</span>
-                <span className="text-gray-900">$0.00</span>
+                <span className="text-gray-900">₹0.00</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="text-gray-600">Tax</span>
                 <span className="text-gray-900">
-                  ${(totalAmount * 0.1).toFixed(2)}
+                  ₹{(totalAmount * 0.1).toFixed(2)}
                 </span>
               </div>
             </div>
@@ -62,7 +62,7 @@ export default function CartPage() {
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between text-lg font-semibold">
                 <span>Total</span>
-                <span>${(totalAmount * 1.1).toFixed(2)}</span>
+                <span>₹{(totalAmount * 1.1).toFixed(2)}</span>
               </div>
             </div>
 

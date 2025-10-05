@@ -35,7 +35,7 @@ export default function CartItem({ item }: CartItemProps) {
         <h3 className="text-lg font-medium text-gray-900 line-clamp-2">
           {item.product.title}
         </h3>
-        <p className="text-gray-600">${item.product.price}</p>
+        <p className="text-gray-600">₹{item.product.price}</p>
       </div>
 
       <div className="flex items-center space-x-3">
@@ -58,7 +58,7 @@ export default function CartItem({ item }: CartItemProps) {
 
       <div className="text-right">
         <p className="text-lg font-semibold text-gray-900">
-          ${(item.product.price * item.quantity).toFixed(2)}
+          ₹{(item.product.price * item.quantity).toFixed(2)}
         </p>
         <button
           onClick={handleRemove}
