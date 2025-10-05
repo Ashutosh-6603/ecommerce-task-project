@@ -30,9 +30,12 @@ export interface AuthState {
 
 export interface ProductState {
   products: Product[];
+  filteredProducts: Product[]; // Add this
   loading: boolean;
   error: string | null;
-  pagination: PaginationState; // Add this line
+  pagination: PaginationState;
+  search: SearchState;
+  filters: ProductFilters; // Add this
 }
 
 export interface CartState {
@@ -75,4 +78,19 @@ export interface PaginationState {
 export interface PaginatedProducts {
   products: Product[];
   pagination: PaginationState;
+}
+
+export interface SearchState {
+  query: string;
+  category: string;
+  minPrice: number | null;
+  maxPrice: number | null;
+}
+
+export interface ProductFilters {
+  categories: string[];
+  priceRange: {
+    min: number;
+    max: number;
+  };
 }

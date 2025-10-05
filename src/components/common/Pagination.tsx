@@ -62,7 +62,6 @@ export default function Pagination({
             <option value={4}>4</option>
             <option value={8}>8</option>
             <option value={12}>12</option>
-            <option value={16}>16</option>
           </select>
           <span className="text-sm text-gray-700">per page</span>
         </div>

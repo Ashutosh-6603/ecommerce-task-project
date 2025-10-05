@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ProductState, Product } from "../types";
+import type { ProductState, Product, SearchState } from "../types";
 import { fetchProducts } from "../services/api";
 
 const initialState: ProductState = {
   products: [],
+  filteredProducts: [], // Add filtered products array
   loading: false,
   error: null,
   pagination: {
@@ -12,6 +13,19 @@ const initialState: ProductState = {
     itemsPerPage: 8,
     totalItems: 0,
     totalPages: 0,
+  },
+  search: {
+    query: "",
+    category: "",
+    minPrice: null,
+    maxPrice: null,
+  },
+  filters: {
+    categories: [],
+    priceRange: {
+      min: 0,
+      max: 1000,
+    },
   },
 };
 
@@ -32,9 +46,55 @@ const productSlice = createSlice({
     },
     setItemsPerPage: (state, action: PayloadAction<number>) => {
       state.pagination.itemsPerPage = action.payload;
-      state.pagination.currentPage = 1; // Reset to first page when changing items per page
+      state.pagination.currentPage = 1;
       state.pagination.totalPages = Math.ceil(
-        state.pagination.totalItems / action.payload
+        (state.filteredProducts.length || state.products.length) /
+          action.payload
+      );
+    },
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.search.query = action.payload;
+      state.pagination.currentPage = 1;
+      state.filteredProducts = filterProducts(state.products, state.search);
+      state.pagination.totalItems = state.filteredProducts.length;
+      state.pagination.totalPages = Math.ceil(
+        state.filteredProducts.length / state.pagination.itemsPerPage
+      );
+    },
+    setSearchCategory: (state, action: PayloadAction<string>) => {
+      state.search.category = action.payload;
+      state.pagination.currentPage = 1;
+      state.filteredProducts = filterProducts(state.products, state.search);
+      state.pagination.totalItems = state.filteredProducts.length;
+      state.pagination.totalPages = Math.ceil(
+        state.filteredProducts.length / state.pagination.itemsPerPage
+      );
+    },
+    setPriceRange: (
+      state,
+      action: PayloadAction<{ min: number | null; max: number | null }>
+    ) => {
+      state.search.minPrice = action.payload.min;
+      state.search.maxPrice = action.payload.max;
+      state.pagination.currentPage = 1;
+      state.filteredProducts = filterProducts(state.products, state.search);
+      state.pagination.totalItems = state.filteredProducts.length;
+      state.pagination.totalPages = Math.ceil(
+        state.filteredProducts.length / state.pagination.itemsPerPage
+      );
+    },
+    clearFilters: (state) => {
+      state.search = {
+        query: "",
+        category: "",
+        minPrice: null,
+        maxPrice: null,
+      };
+      state.filteredProducts = state.products;
+      state.pagination.currentPage = 1;
+      state.pagination.totalItems = state.products.length;
+      state.pagination.totalPages = Math.ceil(
+        state.products.length / state.pagination.itemsPerPage
       );
     },
   },
@@ -49,6 +109,22 @@ const productSlice = createSlice({
         (state, action: PayloadAction<Product[]>) => {
           state.loading = false;
           state.products = action.payload;
+          state.filteredProducts = action.payload;
+
+          // Extract categories and price range
+          const categories = Array.from(
+            new Set(action.payload.map((p) => p.category))
+          );
+          const prices = action.payload.map((p) => p.price);
+
+          state.filters = {
+            categories,
+            priceRange: {
+              min: Math.min(...prices),
+              max: Math.max(...prices),
+            },
+          };
+
           state.pagination.totalItems = action.payload.length;
           state.pagination.totalPages = Math.ceil(
             action.payload.length / state.pagination.itemsPerPage
@@ -62,5 +138,41 @@ const productSlice = createSlice({
   },
 });
 
-export const { setCurrentPage, setItemsPerPage } = productSlice.actions;
+// Helper function to filter products
+const filterProducts = (
+  products: Product[],
+  search: SearchState
+): Product[] => {
+  return products.filter((product) => {
+    // Text search in title and description
+    const matchesQuery =
+      !search.query ||
+      product.title.toLowerCase().includes(search.query.toLowerCase()) ||
+      product.description.toLowerCase().includes(search.query.toLowerCase()) ||
+      product.category.toLowerCase().includes(search.query.toLowerCase());
+
+    // Category filter
+    const matchesCategory =
+      !search.category || product.category === search.category;
+
+    // Price range filter
+    const matchesMinPrice =
+      search.minPrice === null || product.price >= search.minPrice;
+    const matchesMaxPrice =
+      search.maxPrice === null || product.price <= search.maxPrice;
+
+    return (
+      matchesQuery && matchesCategory && matchesMinPrice && matchesMaxPrice
+    );
+  });
+};
+
+export const {
+  setCurrentPage,
+  setItemsPerPage,
+  setSearchQuery,
+  setSearchCategory,
+  setPriceRange,
+  clearFilters,
+} = productSlice.actions;
 export default productSlice.reducer;
