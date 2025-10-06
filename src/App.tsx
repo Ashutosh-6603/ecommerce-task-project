@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./store";
 import { setUser } from "./store/authSlice";
 import { getAuthFromStorage } from "./utils/auth";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Components
 import Header from "./components/common/Header";
@@ -83,6 +85,19 @@ function App() {
             />
           </Routes>
         </main>
+
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
     </Router>
   );
